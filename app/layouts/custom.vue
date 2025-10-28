@@ -1,4 +1,5 @@
 <template>
-    <Header />
-    <slot></slot>
-  </template>
+  <Header />
+  <slot></slot>
+  <Cart/>
+</template>
