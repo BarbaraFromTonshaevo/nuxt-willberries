@@ -147,7 +147,7 @@
       <div class="short-goods row">
         <div class="col-lg-3 col-sm-6" v-for="card in data" :key="card.id">
           <div class="goods-card">
-            <span v-if="card.label" :key="card.id" class="label">{{ card.label.toUpperCase() }}</span>
+            <span v-if="card.label" :key="card.id" class="label">{{ titleFormat(card.label) }}</span>
             <img
               :src="card.img"
               alt="image: Hoodie"

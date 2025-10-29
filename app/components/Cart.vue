@@ -24,14 +24,14 @@
           </tr>
         </thead>
         <tbody class="cart-table__goods">
-            <tr v-for="cartItem of cart" :key="cartItem.id">
-                <td>{{cartItem.name}}</td>
-                <td>{{cartItem.price}}$</td>
-                <td><button class="cart-btn-minus">-</button></td>
-                <td>{{cartItem.count}}</td>
-                <td><button class="cart-btn-plus">+</button></td>
-                <td>{{cartItem.price * cartItem.count}}$</td>
-                <td><button class="cart-btn-delete">x</button></td>
+            <tr v-for="item of cart" :key="item.id">
+                <td>{{item.name}}</td>
+                <td>{{item.price}}$</td>
+                <td><button class="cart-btn-minus" :disabled="item.count <= 1" @click="decrease(item)">-</button></td>
+                <td>{{item.count}}</td>
+                <td><button class="cart-btn-plus" @click="increase(item)">+</button></td>
+                <td>{{item.price * item.count}}$</td>
+                <td><button class="cart-btn-delete" @click="remove(item)">x</button></td>
             </tr>
         </tbody>
         <tfoot>
@@ -63,14 +63,35 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
+import type { CartItem } from '~/models/cart-item.model'
+
 const viewCart = useViewCart()
 const cart = useCart()
+
 const closeCart = () => {
     viewCart.value = false
 }
+
+const increase = (item: CartItem) => {
+  const findItem = cart.value.find(c => c.id === item.id)
+  if(findItem) {
+    findItem.count++
+  }
+}
+
+const decrease = (item: CartItem) => {
+    const findItem = cart.value.find(c => c.id === item.id)
+  if(findItem) {
+    findItem.count--
+  }
+}
+
+const remove = (item: CartItem) => {
+  cart.value = cart.value.filter(c => c.id !== item.id)
+}
+
 const totalPrice = computed(() => {
-    console.log(cart.value)
     return cart.value.reduce((accumulator, cartItem) => accumulator + (cartItem.price * cartItem.count), 0)
 })
 </script>
